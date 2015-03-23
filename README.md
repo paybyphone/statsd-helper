@@ -2,13 +2,7 @@
 
 Simple wrapper around [statsd-csharp-client](https://github.com/lukevenediger/statsd-csharp-client) which adds a prefix based on the hosts Fully Qualified Domain Name and a configurable application name prefix.
 
-So for a metric named:
-
-```
-api.responses.httpstatus.500
-```
-
-Coming from a host named 'servername.example.com' with a configured application name of 'api'
+So for a metric named *api.responses.httpstatus.500* coming from a host named *servername.example.com* with a configured application name of *api*.
 
 The emitted metric will be:
 
