@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 
-namespace StatsDHelper.Tests.Unit
+namespace StatsDHelper.Tests
 {
     [TestFixture]
     public class StatsDHelperTests : BaseTest

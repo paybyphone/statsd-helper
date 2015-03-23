@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace StatsDHelper.Tests.Unit
+namespace StatsDHelper.Tests
 {
     public abstract class BaseTest
     {

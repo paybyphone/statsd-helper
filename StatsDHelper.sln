@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsDHelper", "StatsDHelper\StatsDHelper.csproj", "{299064CA-B8A7-4DBB-B93E-B912618AD828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsDHelper.Tests.Unit", "StatsDHelper.Tests.Unit\StatsDHelper.Tests.Unit.csproj", "{6F18BABE-CC5D-494F-AEF8-24F465E63EA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsDHelper.Tests", "StatsDHelper.Tests\StatsDHelper.Tests.csproj", "{6F18BABE-CC5D-494F-AEF8-24F465E63EA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6D7286E0-BF11-4718-A7DA-0C2F2591B1DD}"
 	ProjectSection(SolutionItems) = preProject

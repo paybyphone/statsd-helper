@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace StatsDHelper.Tests.Unit
+namespace StatsDHelper.Tests
 {
     [TestFixture]
     public class PrefixProviderTests : BaseTest

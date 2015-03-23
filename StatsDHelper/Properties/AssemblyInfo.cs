@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("StatsDHelper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Breathingdust")]
 [assembly: AssemblyProduct("StatsDHelper")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyCopyright("Copyright © Breathingdust 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("StatsDHelper.Tests.Unit")]
+[assembly: InternalsVisibleTo("StatsDHelper.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 

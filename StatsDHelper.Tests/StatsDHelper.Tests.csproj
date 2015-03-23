@@ -7,8 +7,8 @@
     <ProjectGuid>{6F18BABE-CC5D-494F-AEF8-24F465E63EA6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StatsDHelper.Tests.Unit</RootNamespace>
-    <AssemblyName>StatsDHelper.Tests.Unit</AssemblyName>
+    <RootNamespace>StatsDHelper.Tests</RootNamespace>
+    <AssemblyName>StatsDHelper.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
