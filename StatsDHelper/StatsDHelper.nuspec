@@ -6,14 +6,11 @@
     <authors>breathingdust</authors>
     <owners>breathingdust</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Simple wrapper around statsd-csharp-client with preprends with a FQDN and ApplicationName prefix.</description>
+    <description>Simple wrapper around statsd-csharp-client which prepends the metric name with the hosts Fully Qualified Domain Name and a configurable ApplicationName prefix.</description>
     <releaseNotes>Initial Release</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>statsd statsd-csharp-client prefix fqdn</tags>
     <dependencies>
     </dependencies>
   </metadata>
-  <files>
-    <file src="bin\release\StatsDHelper.dll" target="lib\net45" />
-  </files>
 </package>
