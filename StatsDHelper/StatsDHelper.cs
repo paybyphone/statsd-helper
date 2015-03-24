@@ -10,6 +10,9 @@ namespace StatsDHelper
         private readonly IStatsd _statsdClient;
         private string _prefix;
 
+        private static readonly object Padlock = new object();
+        private static IStatsDHelper _instance;
+
         internal StatsDHelper(IPrefixProvider prefixProvider, IStatsd statsdClient)
         {
             _prefixProvider = prefixProvider;
@@ -53,29 +56,36 @@ namespace StatsDHelper
             }
         }
 
-        private static IStatsDHelper _instance;
+        
 
         public static IStatsDHelper Instance
         {
             get
             {
-                if (_instance != null) return _instance;
-
-                var host = ConfigurationManager.AppSettings["StatsD.Host"];
-                var port = ConfigurationManager.AppSettings["StatsD.Port"];
-                var applicationName = ConfigurationManager.AppSettings["StatsD.ApplicationName"];
-
-                if (string.IsNullOrEmpty(host)
-                    || string.IsNullOrEmpty(port)
-                    || string.IsNullOrEmpty(applicationName))
+                if (_instance == null)
                 {
-                    Debug.WriteLine(
-                        "One or more StatsD Client Settings missing. This is designed to fail silently. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
-                        host, port);
-                    return new NullStatsDHelper();
-                }
+                    lock (Padlock)
+                    {
+                        if (_instance == null)
+                        {
+                            var host = ConfigurationManager.AppSettings["StatsD.Host"];
+                            var port = ConfigurationManager.AppSettings["StatsD.Port"];
+                            var applicationName = ConfigurationManager.AppSettings["StatsD.ApplicationName"];
 
-                _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, int.Parse(port)));
+                            if (string.IsNullOrEmpty(host)
+                                || string.IsNullOrEmpty(port)
+                                || string.IsNullOrEmpty(applicationName))
+                            {
+                                Debug.WriteLine(
+                                    "One or more StatsD Client Settings missing. This is designed to fail silently. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
+                                    host, port);
+                                return new NullStatsDHelper();
+                            }
+
+                            _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, int.Parse(port)));
+                        }
+                    }
+                }
                 return _instance;
             }
         }
