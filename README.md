@@ -25,7 +25,7 @@ The helper class is designed to fail silently in the event of misconfiguration (
 ```csharp
     public class InstrumentStatusCodeFilterAttribute : ActionFilterAttribute
     {
-        readonly IStatsDHelper _statsDHelper = StatsDHelper.StatsDHelper.Create();
+        readonly IStatsDHelper _statsDHelper = StatsDHelper.StatsDHelper.Instance;
 
         public override Task OnActionExecutedAsync(HttpActionExecutedContext actionExecutedContext, CancellationToken cancellationToken)
         {
