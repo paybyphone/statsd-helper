@@ -53,21 +53,31 @@ namespace StatsDHelper
             }
         }
 
-        public static IStatsDHelper Create()
+        private static IStatsDHelper _instance;
+
+        public static IStatsDHelper Instance
         {
-            var host = ConfigurationManager.AppSettings["StatsD.Host"];
-            var port = ConfigurationManager.AppSettings["StatsD.Port"];
-            var applicationName = ConfigurationManager.AppSettings["StatsD.ApplicationName"];
-
-            if (string.IsNullOrEmpty(host) 
-                || string.IsNullOrEmpty(port) 
-                || string.IsNullOrEmpty(applicationName))
+            get
             {
-                Debug.WriteLine("One or more StatsD Client Settings missing. This is designed to fail silently. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",host,port);
-                return new NullStatsDHelper();
-            }
+                if (_instance != null) return _instance;
 
-            return new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, int.Parse(port)));
+                var host = ConfigurationManager.AppSettings["StatsD.Host"];
+                var port = ConfigurationManager.AppSettings["StatsD.Port"];
+                var applicationName = ConfigurationManager.AppSettings["StatsD.ApplicationName"];
+
+                if (string.IsNullOrEmpty(host)
+                    || string.IsNullOrEmpty(port)
+                    || string.IsNullOrEmpty(applicationName))
+                {
+                    Debug.WriteLine(
+                        "One or more StatsD Client Settings missing. This is designed to fail silently. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
+                        host, port);
+                    return new NullStatsDHelper();
+                }
+
+                _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, int.Parse(port)));
+                return _instance;
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace StatsDHelper.Tests
         {
             EmptyAppSettings();
 
-            var statsDHelper = StatsDHelper.Create();
+            var statsDHelper = StatsDHelper.Instance;
 
             statsDHelper.Should().BeOfType<NullStatsDHelper>();
         }
@@ -21,7 +21,7 @@ namespace StatsDHelper.Tests
         {
             PopulateAppSettings();
 
-            var statsDHelper = StatsDHelper.Create();
+            var statsDHelper = StatsDHelper.Instance;
 
             statsDHelper.Should().BeOfType<StatsDHelper>();
         }
