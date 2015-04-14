@@ -31,7 +31,7 @@ The helper class is designed to fail silently in the event of misconfiguration (
         {
             var actionName = actionExecutedContext.ActionContext.ActionDescriptor.ActionName;
 
-            _statsDHelper.LogCount(string.Format("{0}{1}", actionName, actionExecutedContext.Response.StatusCode));
+            _statsDHelper.LogCount(string.Format("{0}.{1}", actionName, (int)actionExecutedContext.Response.StatusCode));
             return base.OnActionExecutedAsync(actionExecutedContext, cancellationToken);
         }
     }
