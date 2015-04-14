@@ -56,8 +56,6 @@ namespace StatsDHelper
             }
         }
 
-        
-
         public static IStatsDHelper Instance
         {
             get
