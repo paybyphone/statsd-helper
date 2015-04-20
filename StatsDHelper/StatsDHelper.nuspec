@@ -11,6 +11,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>statsd statsd-csharp-client prefix fqdn</tags>
     <dependencies>
+      <dependency id="statsd-csharp-client" />
     </dependencies>
   </metadata>
 </package>
