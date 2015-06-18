@@ -17,7 +17,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\StatsDClient.dll" target="lib\net45\StatsDClient.dll" />
     <file src="bin\Release\StatsDHelper.dll" target="lib\net45\StatsDHelper.dll" />
   </files>
 </package>
