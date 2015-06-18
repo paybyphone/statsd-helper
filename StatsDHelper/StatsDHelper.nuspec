@@ -4,6 +4,8 @@
     <id>statsd-helper</id>
     <version>$version$</version>
     <authors>PayByPhone</authors>
+    <projectUrl>https://github.com/paybyphone/statsd-helper</projectUrl>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <owners>PayByPhone</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Simple wrapper around statsd-csharp-client which prepends the metric name with the hosts Fully Qualified Domain Name and a configurable ApplicationName prefix.</description>
@@ -11,7 +13,11 @@
     <copyright>Copyright 2015</copyright>
     <tags>statsd statsd-csharp-client prefix fqdn</tags>
     <dependencies>
-      <dependency id="StatsdCsharpClient" />
+      <dependency id="StatsdCsharpClient" version="[1.3.0,)" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="bin\Release\StatsDClient.dll" target="lib\net45\StatsDClient.dll" />
+    <file src="bin\Release\StatsDHelper.dll" target="lib\net45\StatsDHelper.dll" />
+  </files>
 </package>
