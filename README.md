@@ -14,28 +14,30 @@ com.example.servername.api.responses.httpstatus.500
 
 The helper class is designed to fail silently in the event of misconfiguration (look for warnings in your build log) and to be used similarly to something like log4net.
 
-###Configuration
+## Quick Start
+
+### Configuration
 
 ```xml
     <add key="StatsD.ApplicationName" value="foocalculator" />
     <add key="StatsD.Host" value="fooserver" />
-    <add key="StatsD.Port" value="8125" />     
+    <add key="StatsD.Port" value="8125" />
 ```
 
-###Example Usage:
+### Example Usage:
 
 ```csharp
     public class FooService
     {
-        readonly IStatsDHelper _statsDHelper = StatsDHelper.StatsDHelper.Create();
+        private readonly IStatsDHelper _statsDHelper = StatsDHelper.StatsDHelper.Instance;
 
         public void CalculateFoo(int a, int b){
             _statsDHelper.LogCount("calculatefoo");
         }
-        
+
         public List<FooWidget> GetFooWidgets(){
             var repository = new FooRepository();
-            
+
             using(_statsDHelper.LogTiming("foorepository.getfoowidgets.latency") {
                 return repository.GetFooWidgets();
             }
