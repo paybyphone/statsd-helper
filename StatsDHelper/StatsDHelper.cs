@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using StatsdClient;
 
@@ -26,22 +27,34 @@ namespace StatsDHelper
 
         public void LogCount(string name, int count = 1)
         {
-            _statsdClient.LogCount(string.Format("{0}.{1}", GetStandardPrefix, name), count);
+            SafeCaller(() => _statsdClient.LogCount(string.Format("{0}.{1}", GetStandardPrefix, name), count));
         }
 
         public void LogGauge(string name, int value)
         {
-            _statsdClient.LogGauge(string.Format("{0}.{1}", GetStandardPrefix, name), value);
+            SafeCaller(() => _statsdClient.LogGauge(string.Format("{0}.{1}", GetStandardPrefix, name), value));
         }
 
         public void LogTiming(string name, long milliseconds)
         {
-            _statsdClient.LogTiming(string.Format("{0}.{1}", GetStandardPrefix, name), milliseconds);
+            SafeCaller(() => _statsdClient.LogTiming(string.Format("{0}.{1}", GetStandardPrefix, name), milliseconds));
         }
 
         public void LogSet(string name, int value)
         {
-            _statsdClient.LogSet(string.Format("{0}.{1}", GetStandardPrefix, name), value);
+            SafeCaller(() => _statsdClient.LogSet(string.Format("{0}.{1}", GetStandardPrefix, name), value));
+        }
+
+        private static void SafeCaller(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+               Trace.WriteLine(e); 
+            }
         }
 
         public string GetStandardPrefix
@@ -74,9 +87,9 @@ namespace StatsDHelper
                                 || string.IsNullOrEmpty(port)
                                 || string.IsNullOrEmpty(applicationName))
                             {
-                                Debug.WriteLine(
+                                Trace.WriteLine(string.Format(
                                     "One or more StatsD Client Settings missing. This is designed to fail silently. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
-                                    host, port);
+                                    host, port));
                                 return new NullStatsDHelper();
                             }
 
