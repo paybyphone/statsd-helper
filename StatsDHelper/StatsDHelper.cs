@@ -88,7 +88,7 @@ namespace StatsDHelper
                                 || string.IsNullOrEmpty(applicationName))
                             {
                                 Trace.WriteLine(string.Format(
-                                    "One or more StatsD Client Settings missing. This is designed to fail silently. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
+                                    "One or more StatsD Client Settings missing. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
                                     host, port));
                                 return new NullStatsDHelper();
                             }
