@@ -51,10 +51,7 @@ namespace StatsDHelper
             {
                 action();
             }
-            catch (Exception e)
-            {
-               Trace.WriteLine(e); 
-            }
+            catch (Exception) {}
         }
 
         public string GetStandardPrefix
@@ -87,9 +84,7 @@ namespace StatsDHelper
                                 || string.IsNullOrEmpty(port)
                                 || string.IsNullOrEmpty(applicationName))
                             {
-                                Trace.WriteLine(string.Format(
-                                    "One or more StatsD Client Settings missing. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}",
-                                    host, port));
+                                Debug.WriteLine("One or more StatsD Client Settings missing. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}");
                                 return new NullStatsDHelper();
                             }
 
