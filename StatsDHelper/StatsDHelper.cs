@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using StatsdClient;
 
 namespace StatsDHelper
@@ -25,24 +27,60 @@ namespace StatsDHelper
             get{return _statsdClient;}
         }
 
-        public void LogCount(string name, int count = 1)
+        public void LogCount(string name, int count = 1, object tagObject = null)
         {
-            SafeCaller(() => _statsdClient.LogCount(string.Format("{0}.{1}", GetStandardPrefix, name), count));
+            SafeCaller(() => _statsdClient.LogCount(string.Format("{0}.{1}", GetStandardPrefix, name), count, ExtractTags(tagObject).ToArray()));
         }
 
-        public void LogGauge(string name, int value)
+        public void LogGauge(string name, int value, object tagObject = null)
         {
-            SafeCaller(() => _statsdClient.LogGauge(string.Format("{0}.{1}", GetStandardPrefix, name), value));
+            SafeCaller(() => _statsdClient.LogGauge(string.Format("{0}.{1}", GetStandardPrefix, name), value, ExtractTags(tagObject).ToArray()));
         }
 
-        public void LogTiming(string name, long milliseconds)
+        public void LogTiming(string name, long milliseconds, object tagObject = null)
         {
-            SafeCaller(() => _statsdClient.LogTiming(string.Format("{0}.{1}", GetStandardPrefix, name), milliseconds));
+            SafeCaller(() => _statsdClient.LogTiming(string.Format("{0}.{1}", GetStandardPrefix, name), milliseconds, ExtractTags(tagObject).ToArray()));
         }
 
-        public void LogSet(string name, int value)
+        public void LogSet(string name, int value, object tagObject = null)
         {
-            SafeCaller(() => _statsdClient.LogSet(string.Format("{0}.{1}", GetStandardPrefix, name), value));
+            SafeCaller(() => _statsdClient.LogSet(string.Format("{0}.{1}", GetStandardPrefix, name), value, ExtractTags(tagObject).ToArray()));
+        }
+
+        public void LogCount(string name, int count = 1, params KeyValuePair<string, string>[] tags)
+        {
+            SafeCaller(() => _statsdClient.LogCount(string.Format("{0}.{1}", GetStandardPrefix, name), count, tags));
+        }
+
+        public void LogGauge(string name, int value, params KeyValuePair<string, string>[] tags)
+        {
+            SafeCaller(() => _statsdClient.LogGauge(string.Format("{0}.{1}", GetStandardPrefix, name), value, tags));
+        }
+
+        public void LogTiming(string name, long milliseconds, params KeyValuePair<string, string>[] tags)
+        {
+            SafeCaller(() => _statsdClient.LogTiming(string.Format("{0}.{1}", GetStandardPrefix, name), milliseconds, tags));
+        }
+
+        public void LogSet(string name, int value, params KeyValuePair<string, string>[] tags)
+        {
+            SafeCaller(() => _statsdClient.LogSet(string.Format("{0}.{1}", GetStandardPrefix, name), value, tags));
+        }
+
+        private static IEnumerable<KeyValuePair<string, string>> ExtractTags(object tagObject)
+        {
+            if (tagObject == null)
+            {
+                yield break;
+            }
+
+            var objectType = tagObject.GetType();
+            var properties = objectType.GetProperties();
+
+            foreach (var property in properties)
+            {
+                yield return new KeyValuePair<string, string>(property.Name, property.GetValue(tagObject, null).ToString());
+            }
         }
 
         private static void SafeCaller(Action action)

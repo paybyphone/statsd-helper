@@ -8,19 +8,21 @@ namespace StatsDHelper
     {
         private readonly IStatsDHelper _helper;
         private readonly string _name;
+        private readonly object _tagObject;
         private readonly Stopwatch _stopwatch;
 
-        internal TimerToken(IStatsDHelper helper, string name)
+        internal TimerToken(IStatsDHelper helper, string name, object tagObject = null)
         {
             _stopwatch = Stopwatch.StartNew();
             _helper = helper;
             _name = name;
+            _tagObject = tagObject;
         }
 
         public void Dispose()
         {
             _stopwatch.Stop();
-            _helper.LogTiming(_name, (int)_stopwatch.ElapsedMilliseconds);
+            _helper.LogTiming(_name, (int)_stopwatch.ElapsedMilliseconds, _tagObject);
         }
     }
 }

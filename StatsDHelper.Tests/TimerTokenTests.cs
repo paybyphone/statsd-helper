@@ -14,7 +14,7 @@ namespace StatsDHelper.Tests
             using (new TimerToken(statsDHelper, "name"))
             {}
 
-            statsDHelper.AssertWasCalled(o => o.LogTiming(Arg<string>.Is.Anything,Arg<long>.Is.Anything));
+            statsDHelper.AssertWasCalled(o => o.LogTiming(Arg<string>.Is.Anything, Arg<long>.Is.Anything, Arg<object>.Is.Anything));
         }
     }
 }
