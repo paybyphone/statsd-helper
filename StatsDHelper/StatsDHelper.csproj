@@ -43,11 +43,11 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StatsdClient" Condition=" '$(Configuration)|$(Platform)' != 'Release 4.5|AnyCPU' ">
-      <HintPath>..\packages\StatsdCsharpClient.1.3.0.0\lib\net40\StatsdClient.dll</HintPath>
-    </Reference>
     <Reference Include="StatsdClient" Condition=" '$(Configuration)|$(Platform)' == 'Release 4.5|AnyCPU' ">
       <HintPath>..\packages\StatsdCsharpClient.1.3.0.0\lib\net45\StatsdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="StatsdClient, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StatsdCsharpClient.1.4.6\lib\net45\StatsdClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
