@@ -14,6 +14,8 @@ namespace StatsDHelper
         private static readonly object Padlock = new object();
         private static IStatsDHelper _instance;
 
+        private static StatsDHelperConfig _config;
+
         internal StatsDHelper(IPrefixProvider prefixProvider, IStatsd statsdClient)
         {
             _prefixProvider = prefixProvider;
@@ -60,7 +62,7 @@ namespace StatsDHelper
             {
                 if (string.IsNullOrEmpty(_prefix))
                 {
-                    _prefix = _prefixProvider.GetPrefix();
+                    _prefix = _prefixProvider.GetPrefix(_config);
                 }
                 return _prefix;
             }
@@ -76,23 +78,37 @@ namespace StatsDHelper
                     {
                         if (_instance == null)
                         {
-                            var host = ConfigurationManager.AppSettings["StatsD.Host"];
-                            var port = ConfigurationManager.AppSettings["StatsD.Port"];
-                            var applicationName = ConfigurationManager.AppSettings["StatsD.ApplicationName"];
+                            if (_config == null)
+                            {
+                                Debug.WriteLine("The StatsD Helper need to be configured first by calling the Configure method.");
+                                throw new InvalidOperationException("StatsD Helper configuration has not been set. Call Configure method before calling Instance.");
+                            }
+
+                            var host = _config.StatsDServerHost;
+                            var port = _config.StatsDServerPort;
+                            var applicationName = _config.ApplicationName;
 
                             if (string.IsNullOrEmpty(host)
-                                || string.IsNullOrEmpty(port)
+                                || !port.HasValue
                                 || string.IsNullOrEmpty(applicationName))
                             {
                                 Debug.WriteLine("One or more StatsD Client Settings missing. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}");
                                 return new NullStatsDHelper();
                             }
 
-                            _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, int.Parse(port)));
+                            _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, port.Value));
                         }
                     }
                 }
                 return _instance;
+            }
+        }
+
+        public static void Configure(StatsDHelperConfig configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
             }
         }
     }
