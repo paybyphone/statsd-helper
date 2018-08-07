@@ -16,7 +16,7 @@ The helper class is designed to fail silently in the event of misconfiguration (
 
 ### Configuration
 
-The `StatsDHelper.Configure` method need to be called before calling `StatsDHelper.Instance`. All 2 of the following properties are required.
+The `StatsDHelper.Configure` method need to be called before calling `StatsDHelper.Instance`. All 3 of the following properties are required.
 ```csharp
 var statsDHelperConfig = new StatsDHelperConfig()
 {
