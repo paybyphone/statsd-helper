@@ -15,9 +15,10 @@ namespace StatsDHelper
         private readonly IStatsd _statsDClient;
         private string _prefix;
 
-        private static readonly object Padlock = new object();
+        private static readonly object InstancePadlock = new object();
         private static IStatsDHelper _instance;
-
+        
+        private static readonly object ConfigPadlock = new object();
         private static StatsDHelperConfig _config;
 
         internal StatsDHelper(IPrefixProvider prefixProvider, IStatsd statsDClient)
@@ -75,29 +76,36 @@ namespace StatsDHelper
             {
                 if (_instance == null)
                 {
-                    lock (Padlock)
+                    lock (InstancePadlock)
                     {
                         if (_instance == null)
                         {
-                            if (_config == null)
+                            lock (ConfigPadlock)
                             {
-                                Debug.WriteLine("The StatsD Helper need to be configured first by calling the Configure method.");
-                                throw new InvalidOperationException("StatsD Helper configuration has not been set. Call Configure method before calling Instance.");
+                                if (_config == null)
+                                {
+                                    Debug.WriteLine(
+                                        "The StatsD Helper need to be configured first by calling the Configure method.");
+                                    throw new InvalidOperationException(
+                                        "StatsD Helper configuration has not been set. Call Configure method before calling Instance.");
+                                }
+
+                                var host = _config.StatsDServerHost;
+                                var port = _config.StatsDServerPort;
+                                var applicationName = _config.ApplicationName;
+
+                                if (string.IsNullOrEmpty(host)
+                                    || !port.HasValue
+                                    || string.IsNullOrEmpty(applicationName))
+                                {
+                                    Debug.WriteLine(
+                                        "One or more StatsD Client Settings missing. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}");
+                                    return new NullStatsDHelper();
+                                }
+
+                                _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()),
+                                    new Statsd(host, port.Value));
                             }
-
-                            var host = _config.StatsDServerHost;
-                            var port = _config.StatsDServerPort;
-                            var applicationName = _config.ApplicationName;
-
-                            if (string.IsNullOrEmpty(host)
-                                || !port.HasValue
-                                || string.IsNullOrEmpty(applicationName))
-                            {
-                                Debug.WriteLine("One or more StatsD Client Settings missing. Ensure an application name, host and port are set or no metrics will be sent. Set Values: Host={0} Port={1}");
-                                return new NullStatsDHelper();
-                            }
-
-                            _instance = new StatsDHelper(new PrefixProvider(new HostPropertiesProvider()), new Statsd(host, port.Value));
                         }
                     }
                 }
@@ -112,7 +120,29 @@ namespace StatsDHelper
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            _config = configuration;
+            lock (ConfigPadlock)
+            {
+                _config = configuration;
+            }
+        }
+
+        public static void Cleanup()
+        {
+            if (_instance != null)
+            {
+                lock (InstancePadlock)
+                {
+                    _instance = null;
+                }
+            }
+
+            if (_config != null)
+            {
+                lock (ConfigPadlock)
+                {
+                    _config = null;
+                }
+            }
         }
     }
 }

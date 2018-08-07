@@ -36,7 +36,7 @@ namespace StatsDHelper.Tests
 
             var prefixProvider = new PrefixProvider(hostPropertiesProvider);
 
-            Assert.Throws<InvalidOperationException>(() => prefixProvider.GetPrefix(null));
+            Assert.Throws<ArgumentNullException>(() => prefixProvider.GetPrefix(null));
         }
     }
 }
