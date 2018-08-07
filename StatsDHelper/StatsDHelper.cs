@@ -126,7 +126,7 @@ namespace StatsDHelper
             }
         }
 
-        public static void Cleanup()
+        internal static void Cleanup()
         {
             if (_instance != null)
             {
