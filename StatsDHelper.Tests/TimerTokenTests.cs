@@ -1,20 +1,19 @@
-﻿using NUnit.Framework;
-using Rhino.Mocks;
+﻿using FakeItEasy;
+using Xunit;
 
 namespace StatsDHelper.Tests
 {
-    [TestFixture]
     public class TimerTokenTests
     {
-        [Test]
+        [Fact]
         public void when_token_is_used_in_a_using_block_timing_is_logged()
         {
-            var statsDHelper = MockRepository.GenerateStub<IStatsDHelper>();
+            var statsDHelper = A.Fake<IStatsDHelper>();
 
             using (new TimerToken(statsDHelper, "name"))
             {}
 
-            statsDHelper.AssertWasCalled(o => o.LogTiming(Arg<string>.Is.Anything,Arg<long>.Is.Anything));
+            A.CallTo(() => statsDHelper.LogTiming(A<string>._, A<long>._)).MustHaveHappened();
         }
     }
 }

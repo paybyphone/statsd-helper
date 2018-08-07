@@ -20,7 +20,7 @@ namespace StatsDHelper
             }
 
             var applicationName = config.ApplicationName;
-            return string.Format("{0}.{1}", GetFullyQualifiedDomainName(), applicationName);
+            return $"{GetFullyQualifiedDomainName()}.{applicationName}";
         }
 
         string GetFullyQualifiedDomainName()
@@ -29,7 +29,7 @@ namespace StatsDHelper
             var hostName = _hostPropertiesProvider.GetHostName();
             var domainSegment = string.Join(".", domainName.Split('.').Reverse());
 
-            return string.Format("{0}.{1}", domainSegment, hostName);
+            return $"{domainSegment}.{hostName}";
         }
     }
 }

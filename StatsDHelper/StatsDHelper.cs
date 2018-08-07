@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using StatsdClient;
+
+[assembly:InternalsVisibleTo("StatsDHelper.Tests")]
+[assembly:InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace StatsDHelper
 {
     public class StatsDHelper : IStatsDHelper
     {
         private readonly IPrefixProvider _prefixProvider;
-        private readonly IStatsd _statsdClient;
+        private readonly IStatsd _statsDClient;
         private string _prefix;
 
         private static readonly object Padlock = new object();
@@ -16,35 +20,32 @@ namespace StatsDHelper
 
         private static StatsDHelperConfig _config;
 
-        internal StatsDHelper(IPrefixProvider prefixProvider, IStatsd statsdClient)
+        internal StatsDHelper(IPrefixProvider prefixProvider, IStatsd statsDClient)
         {
             _prefixProvider = prefixProvider;
-            _statsdClient = statsdClient;
+            _statsDClient = statsDClient;
         }
 
-        public IStatsd StatsdClient
-        {
-            get{return _statsdClient;}
-        }
+        public IStatsd StatsdClient => _statsDClient;
 
         public void LogCount(string name, int count = 1)
         {
-            SafeCaller(() => _statsdClient.LogCount(string.Format("{0}.{1}", GetStandardPrefix, name), count));
+            SafeCaller(() => _statsDClient.LogCount($"{GetStandardPrefix}.{name}", count));
         }
 
         public void LogGauge(string name, int value)
         {
-            SafeCaller(() => _statsdClient.LogGauge(string.Format("{0}.{1}", GetStandardPrefix, name), value));
+            SafeCaller(() => _statsDClient.LogGauge($"{GetStandardPrefix}.{name}", value));
         }
 
         public void LogTiming(string name, long milliseconds)
         {
-            SafeCaller(() => _statsdClient.LogTiming(string.Format("{0}.{1}", GetStandardPrefix, name), milliseconds));
+            SafeCaller(() => _statsDClient.LogTiming($"{GetStandardPrefix}.{name}", milliseconds));
         }
 
         public void LogSet(string name, int value)
         {
-            SafeCaller(() => _statsdClient.LogSet(string.Format("{0}.{1}", GetStandardPrefix, name), value));
+            SafeCaller(() => _statsDClient.LogSet($"{GetStandardPrefix}.{name}", value));
         }
 
         private static void SafeCaller(Action action)
@@ -56,7 +57,7 @@ namespace StatsDHelper
             catch (Exception) {}
         }
 
-        public string GetStandardPrefix
+        private string GetStandardPrefix
         {
             get
             {
@@ -110,6 +111,8 @@ namespace StatsDHelper
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
+
+            _config = configuration;
         }
     }
 }
