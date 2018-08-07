@@ -4,7 +4,6 @@ using Rhino.Mocks;
 
 namespace StatsDHelper.Tests
 {
-    [TestFixture]
     public class PrefixProviderTests : BaseTest
     {
         [Test]
