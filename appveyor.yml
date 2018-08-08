@@ -1,4 +1,4 @@
-version: '1.0.{build}'
+version: '1.1.{build}'
 image: Visual Studio 2017
 branches:
   only:
@@ -17,6 +17,8 @@ before_build:
 build_script:
   - cmd: dotnet build -c Release
   - cmd: dotnet pack -c Release --no-build /p:TargetFramework=netstandard2.0 ./StatsDHelper/StatsDHelper.csproj
+artifacts:
+  - path: ./StatsDHelper/bin/Release/*.nupkg
 test_script:
   - cmd: dotnet test -c Release --no-build StatsDHelper.Tests/StatsDHelper.Tests.csproj
 deploy:
@@ -24,4 +26,3 @@ deploy:
     api_key: 
       secure: IuyOJ77CDIcynzTfgeo12I2CFVaBX1mP7uidU5L8MVbF3wv0C3x+c+jy0If0+sfB
     skip_symbols: true
-    artifact: ./StatsDHelper/bin/Release/.*\.nupkg
