@@ -18,5 +18,5 @@ before_build:
 build_script:
   - cmd: dotnet publish ./StatsDHelper/StatsDHelper.csproj
 test_script:
-  - cmd: dotnet test StatsDHeleper.Tests/StatsDHeleper.Tests.csproj
+  - cmd: dotnet test StatsDHelper.Tests/StatsDHelper.Tests.csproj
 deploy: off
