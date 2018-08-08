@@ -7,11 +7,11 @@ clone_depth: 1
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
+  version: '{appveyor_build_version}'
+  package_version: '{appveyor_build_version}'
+  assembly_version: '{appveyor_build_version}'
+  file_version: '{appveyor_build_version}'
+  informational_version: '{appveyor_build_version}'
 before_build:
   - cmd: dotnet --version
 build_script:
