@@ -1,0 +1,22 @@
+version: '1.0.{build}'
+image: Visual Studio 2017
+branches:
+  only:
+    - appveyor
+clone_depth: 1
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+before_build:
+  - cmd: dotnet --version
+  - cmd: dotnet restore
+build_script:
+  - cmd: dotnet publish ./StatsDHelper/StatsDHelper.csproj
+test_script:
+  - cmd: dotnet test StatsDHeleper.Tests
+deploy: off
