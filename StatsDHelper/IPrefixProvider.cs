@@ -2,6 +2,6 @@
 {
     internal interface IPrefixProvider
     {
-        string GetPrefix();
+        string GetPrefix(StatsDHelperConfig config);
     }
 }

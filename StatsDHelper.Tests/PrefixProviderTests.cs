@@ -1,30 +1,42 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using Rhino.Mocks;
+﻿using System;
+using FakeItEasy;
+using FluentAssertions;
+using Xunit;
 
 namespace StatsDHelper.Tests
 {
-    [TestFixture]
     public class PrefixProviderTests : BaseTest
     {
-        [Test]
+        [Fact]
         public void when_getting_a_prefix_returned_prefix_is_formed_correctly()
         {
-            PopulateAppSettings();
+            var hostPropertiesProvider = A.Fake<IHostPropertiesProvider>();
 
-            var hostPropertiesProvider = MockRepository.GenerateStub<IHostPropertiesProvider>();
-
-            hostPropertiesProvider.Stub(o => o.GetDomainName())
-                .Return("test.com");
-
-            hostPropertiesProvider.Stub(o => o.GetHostName())
-                .Return("red-iis008");
+            A.CallTo(() => hostPropertiesProvider.GetDomainName()).Returns("test.com");
+            A.CallTo(() => hostPropertiesProvider.GetHostName()).Returns("red-iis008");
 
             var prefixProvider = new PrefixProvider(hostPropertiesProvider);
 
-            var result = prefixProvider.GetPrefix();
+            var statsDHelperConfig = new StatsDHelperConfig()
+            {
+                ApplicationName = TestApplicationName,  
+            };
+            var result = prefixProvider.GetPrefix(statsDHelperConfig);
 
             result.Should().Be(string.Format("com.test.red-iis008.{0}",TestApplicationName));
+        }
+
+        [Fact]
+        public void get_prefix_with_null_config_throws()
+        {
+            var hostPropertiesProvider = A.Fake<IHostPropertiesProvider>();
+
+            A.CallTo(() => hostPropertiesProvider.GetDomainName()).Returns("test.com");
+            A.CallTo(() => hostPropertiesProvider.GetHostName()).Returns("red-iis008");
+
+            var prefixProvider = new PrefixProvider(hostPropertiesProvider);
+
+            Assert.Throws<ArgumentNullException>(() => prefixProvider.GetPrefix(null));
         }
     }
 }

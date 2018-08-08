@@ -12,20 +12,24 @@ namespace StatsDHelper
             _hostPropertiesProvider = hostPropertiesProvider;
         }
 
-        public string GetPrefix()
+        public string GetPrefix(StatsDHelperConfig config)
         {
-            var applicationName = ConfigurationManager.AppSettings["StatsD.ApplicationName"];
-            return string.Format("{0}.{1}", GetFullyQualifiedDomainName(), applicationName);
+            if (config == null)
+            {
+                throw new System.ArgumentNullException(nameof(config));
+            }
+
+            var applicationName = config.ApplicationName;
+            return $"{GetFullyQualifiedDomainName()}.{applicationName}";
         }
 
         string GetFullyQualifiedDomainName()
         {
-            
             var domainName = _hostPropertiesProvider.GetDomainName();
             var hostName = _hostPropertiesProvider.GetHostName();
             var domainSegment = string.Join(".", domainName.Split('.').Reverse());
 
-            return string.Format("{0}.{1}", domainSegment, hostName);
+            return $"{domainSegment}.{hostName}";
         }
     }
 }
