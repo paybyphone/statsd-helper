@@ -2,7 +2,7 @@ version: '1.1.{build}'
 image: Visual Studio 2017
 branches:
   only:
-    - appveyor
+    - master
 clone_depth: 1
 dotnet_csproj:
   patch: true
