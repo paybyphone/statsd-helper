@@ -1,5 +1,7 @@
 # StatsDHelper
 
+[![Build status](https://ci.appveyor.com/api/projects/status/b02v97o2ttw8iacv?svg=true)](https://ci.appveyor.com/project/PayByPhone/statsd-helper)
+
 Simple wrapper around [statsd-csharp-client](https://github.com/lukevenediger/statsd-csharp-client) which adds a prefix based on the hosts Fully Qualified Domain Name and a configurable application name prefix.
 
 So for a metric named *api.responses.httpstatus.500* coming from a host named *servername.example.com* with a configured application name of *api*.
