@@ -2,10 +2,13 @@
   
   <PropertyGroup>
     <Version>1.0.0</Version>
-    <PackageVersion>1.0.0</PackageVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
     <InformationalVersion>1.0.0</InformationalVersion>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>statsd-helper</PackageId>
+    <Authors>PayByPhone</Authors>
+    <Description>Simple wrapper around statsd-csharp-client which prepends the metric name with the hosts Fully Qualified Domain Name and a configurable ApplicationName prefix.</Description>
   </PropertyGroup>
 
   <PropertyGroup>
